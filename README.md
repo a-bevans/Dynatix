@@ -21,6 +21,6 @@ Transfer the ticket by entering the recipient's phone number and confirming the 
 ## Contributors
 
 - Alex Evans
-- Claris Pax
+- Claris Paz
 - Khushi Nakra
 - Nadia Nafeesa Binti Rashid
