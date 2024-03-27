@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dynatix</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <header>
+        <h1>Dynatix</h1>
+    </header>
+    <main>
+        <section id="ticket-info">
+            <!-- Ticket information will be displayed here -->
+            <section id="event-info">
+                <!-- <script>
+                    // Fetch the data from a server or local file
+                    fetch('path/to/your/data.json') 
+                        .then(response => response.json())
+                        .then(data => {
+                            // Insert the data into the HTML
+                            document.getElementById('event-info').innerHTML = `
+                                <p>Ticket/Order Number: ${data.ticketNumber}</p>
+                                <p>Event Name: ${data.eventName}</p>
+                                // Date | Time | Venue: 
+                                <p>${data.date} | ${data.time} | ${data.venue}</p>
+                                <p>Ticket Type: ${data.ticketType}</p>
+                                <p>Section: ${data.section}</p>
+                                <p>Row: ${data.row}</p>
+                                <p>Seat: ${data.seat}</p>
+                            `;
+                        })
+                        .catch(error => console.error('Error:', error));
+                </script> -->
+            </section>
+            <!-- insert moving barcode here -->
+            <section id="barcode">
+                <!-- temporary only -->
+                <img src="images/qr_placeholder.png" alt="Barcode">
+            <p>SCREENSHOTS NOT VALID</p>
+        </section>
+        
+        <section id="ticket-actions">
+            <!-- Ticket actions (e.g., generate, transfer) will be displayed here -->
+            <button id="transfer-ticket">Transfer Ticket</button>
+        </section>
+    </main>
+    <footer>
+        <p>&copy; 2024 Dynatix. All rights reserved.</p>
+    </footer>
+    <script src="script.js"></script>
+</body>
+</html>
