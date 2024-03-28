@@ -12,6 +12,8 @@
         <h1>Dynatix</h1>
     </header>
     <main>
+        <p>You are about to receive a ticket for:</p>
+        <p>PLACEHOLDER FOR TICKET INFO</p>
         <section id="ticket-info">
             <!-- Ticket information will be displayed here -->
             <section id="event-info">
@@ -35,16 +37,14 @@
                         .catch(error => console.error('Error:', error));
                 </script> -->
             </section>
-            <!-- insert moving barcode here -->
-            <section id="barcode">
-                <!-- temporary only -->
-                <img src="images/qr_placeholder.png" alt="Barcode">
-            <p>SCREENSHOTS ARE NOT VALID</p>
+            <p>To finalise the transfer, enter the 6 digit OTP that will be sent to your phone number.</p>
         </section>
         
-        <section id="ticket-actions">
-            <!-- Ticket actions (e.g., generate, transfer) will be displayed here -->
-            <button id="transfer-ticket">Transfer Ticket</button>
+        <section id="accept-actions">
+            <button id="request-otp">Request OTP</button>
+            <p></p>
+            <input type="text" id="otp" placeholder="Enter OTP">
+            <button id="accept-ticket">Accept Ticket</button>
         </section>
     </main>
     <footer>
