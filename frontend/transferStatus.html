@@ -1,4 +1,4 @@
-<!-- This is the page after clicking the link to view your ticket -->
+<!-- This is the page showing the status of the ticket transfer -->
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -13,8 +13,12 @@
         <h1>Dynatix</h1>
     </header>
     <main>
-        <p>Verify your identity</p>
-        
+        <p>Ticket transfer status:</p>
+        <!-- insert script to check whether PENDING/SUCCESSFUL -->
+        <!-- IF PENDING -->
+        <p>Your ticket transfer is pending. Please wait for the recipient to verify their identity by following the steps in the link sent to them via SMS.</p>
+        <!-- ELSE IF SUCCESSFUL -->
+        <p>Your ticket has been successfully transferred to the recipient.</p>
         <section id="verify-owner">
             <button id="request-otp">Request OTP</button>
             <p></p>

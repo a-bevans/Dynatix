@@ -38,7 +38,7 @@
         </section>
         
         <section id="transferring-actions">
-            <form id="myForm" onsubmit="return validateForm()">
+            <!-- <form id="myForm" onsubmit="return validateForm()"> -->
                 <label for="phoneNumber">Input the phone number of the ticket recipient:</label>
                 <!-- country codes (ISO 3166) and Dial codes. -->
                 <select name="countryCode" id="">
@@ -487,8 +487,13 @@
                 </select>
                 <input type="text" id="confirmPhoneNumber" placeholder="Confirm Phone Number"><br><br>
                 
-                <input type="submit" value="Transfer">
-            </form>
+
+                <button onclick="return validateForm()">Transfer</button>
+
+
+                
+                
+            <!-- </form> -->
         </section>
 
         <!-- handling phone number input -->
@@ -516,6 +521,8 @@
                     return false;
                 }
 
+                // If all validations pass, navigate to the other page
+                window.location.href = "transferStatus.html";
                 return true;
             }
             </script>
