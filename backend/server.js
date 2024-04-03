@@ -33,6 +33,19 @@ async function connectToDB() {
 
 connectToDB();
 
+/* GET phone number*/
+app.get('/verifyNumber', (request, response) => {
+    var phoneNumber = request.query.phoneNumber;
+
+    db.collection("users").findOne({phoneNumber: phoneNumber}).then((result) => {
+        if (!result) {
+            response.status(404).send("User with the following phone number does not exist.");
+        } else {
+            response.status(200).send("User exists in the database.");
+        }
+    })
+});
+
 /* GET tickets associated with phone number*/
 app.get('/myTickets', (request, response) => {
     var phoneNumber = request.query.phoneNumber;
