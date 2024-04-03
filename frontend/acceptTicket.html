@@ -51,6 +51,46 @@
     <footer>
         <p>&copy; 2024 Dynatix. All rights reserved.</p>
     </footer>
-    <script src="script.js"></script>
+    
+    <!-- handling phone number input -->
+    <script>
+        // Checking if the phone number is valid
+        async function validateForm() {
+            var phoneNumber = document.getElementById("phoneNumber").value;
+            var confirmPhoneNumber = document.getElementById("confirmPhoneNumber").value;
+
+            // Validate length
+            if (phoneNumber.length !== 10 || confirmPhoneNumber.length !== 10) {
+                alert("Phone numbers must be 10 digits long.");
+                return false;
+            }
+
+            // Validate numeric characters
+            if (!/^\d+$/.test(phoneNumber) || !/^\d+$/.test(confirmPhoneNumber)) {
+                alert("Phone numbers must contain only numeric characters.");
+                return false;
+            }
+
+            // Check if phone number is in database
+            const response = await fetch('/checkPhoneNumber', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ phoneNumber }),
+            });
+
+            const data = await response.json();
+
+            if (!data.exists) {
+                alert("Phone number does not exist in the database.");
+                return false;
+            }
+
+            // If all validations pass, navigate to the other page
+            window.location.href = "transferStatus.html";
+            return true;
+        }
+    </script>
 </body>
 </html>
