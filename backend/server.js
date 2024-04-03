@@ -2,11 +2,17 @@ require('dotenv').config();
 const bodyparser = require('body-parser');
 const express = require('express');
 const qr = require('qrcode');
+const cors = require('cors');
 
 const app = express();
 const PORT = process.env.PORT || 3000;
 
 app.use(bodyparser.json());
+const corsOptions = {
+    origin: "http://localhost:5500",
+    credentials: true,
+};
+app.use(cors(corsOptions));
 
 app.get('/', (req, res) => {
     res.send('Hello world!');
