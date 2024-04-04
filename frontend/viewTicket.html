@@ -16,33 +16,24 @@
         <section id="ticket-info">
             <!-- Ticket information will be displayed here -->
             <section id="event-info">
-                <!-- <script>
-                    // Fetch the data from a server or local file
-                    fetch('path/to/your/data.json') 
-                        .then(response => response.json())
-                        .then(data => {
-                            // Insert the data into the HTML
-                            document.getElementById('event-info').innerHTML = `
-                                <p>Ticket/Order Number: ${data.ticketNumber}</p>
-                                <p>Event Name: ${data.eventName}</p>
-                                // Date | Time | Venue: 
-                                <p>${data.date} | ${data.time} | ${data.venue}</p>
-                                <p>Ticket Type: ${data.ticketType}</p>
-                                <p>Section: ${data.section}</p>
-                                <p>Row: ${data.row}</p>
-                                <p>Seat: ${data.seat}</p>
-                            `;
-                        })
-                        .catch(error => console.error('Error:', error));
-                </script> -->
+              
             </section>
-            <!-- insert moving barcode here -->
-            <section id="barcode">
-                <!-- temporary only -->
-                <img src="images/qr_placeholder.png" alt="Barcode">
-            <p>SCREENSHOTS ARE NOT VALID</p>
-        </section>
-        
+            
+            <div class='spacer'></div>
+            <div class='anim-box'>
+            <div></div>
+            <div class='scanner'></div>
+              <!-- insert moving barcode here -->
+              <div class='scanner'></div>
+              <div id="anim-box">
+                  
+                  <!-- temporary only -->
+                  <img id="barcode" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAHQAAAB0CAYAAABUmhYnAAAAAklEQVR4AewaftIAAAKxSURBVO3BQW7sWAwEwSxC979yjpdcPUCQusfmZ0T8wRqjWKMUa5RijVKsUYo1SrFGKdYoxRqlWKMUa5RijVKsUYo1SrFGKdYoFw8l4ZtU7khCp9IloVPpkvBNKk8Ua5RijVKsUS5epvKmJNyRhE7lROUOlTcl4U3FGqVYoxRrlIsPS8IdKnck4SQJnUqXhE7ljiTcofJJxRqlWKMUa5SLYVS6JJyoTFKsUYo1SrFGufjHJOFE5S8r1ijFGqVYo1x8mMo3JaFTOUnCEyq/SbFGKdYoxRrl4mVJ+D+pdEnoVJ5Iwm9WrFGKNUqxRrl4SOUvScIdKn9JsUYp1ijFGuXioSR0Kl0S3qTSqdyh0iXhJAlvUvmkYo1SrFGKNcrFQyonKidJOFHpkvBNKl0SOpWTJJwkoVN5olijFGuUYo0Sf/CiJHQqJ0noVLokdCp3JOFEpUtCp3KShE7lJAmdypuKNUqxRinWKPEHL0rCHSp3JOFE5ZOS8CaVNxVrlGKNUqxRLl6mcpKEkyScqDyRhE6lS0Kn0ql0SehUTpLwScUapVijFGuU+IM/LAmdykkS3qRykoQ7VJ4o1ijFGqVYo1w8lIRvUulUTpLQqXRJ6FS6JNyRhE6lS0Kn8qZijVKsUYo1ysXLVN6UhJMkdConSThJwonKiUqXhE6lS0Kn8kSxRinWKMUa5eLDknCHyhNJ6FROktCpnCShUzlR6ZLQqbypWKMUa5RijXIxjMo3JeFEpVP5pGKNUqxRijXKxTBJuEOlS0Kn0qn8ZsUapVijFGuUiw9T+SSVN6nckYQ7VD6pWKMUa5RijXLxsiR8UxKeUOmS0Kl0SehU7khCp/KmYo1SrFGKNUr8wRqjWKMUa5RijVKsUYo1SrFGKdYoxRqlWKMUa5RijVKsUYo1SrFGKdYo/wF9oBDlsJjGOwAAAABJRU5ErkJggg==">
+              
+              </div>
+              <p>SCREENSHOTS ARE NOT VALID</p>
+            </div>
+            <div class='spacer'></div>    
         <section id="ticket-actions">
             <!-- Ticket actions (e.g., generate, transfer) will be displayed here -->
             <a href="transferTicket.html">
@@ -50,6 +41,7 @@
             </a>
         </section>
     </main>
+    
     <footer>
         <p>&copy; 2024 Dynatix. All rights reserved.</p>
     </footer>
