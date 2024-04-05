@@ -53,7 +53,7 @@
         <p>&copy; 2024 Dynatix. All rights reserved.</p>
     </footer>
     
-    <!-- handling phone number input -->
+    <!-- handling otp verification for new number -->
     <script>
         function sendOTPNewOwner() {
             var newPhoneNumber = localStorage.getItem('newPhoneNumber');
@@ -69,32 +69,56 @@
             alert("OTP sent to your phone number.");
             return response.json();
             }
-        
 
-        function verifyNewOwner() {
-            var otp = document.getElementById('otp').value;
-            var phoneNumber = localStorage.getItem('newPhoneNumber');
+            function verifyNewOwner() {
+                var otp = document.getElementById('otp').value;
+                var newPhoneNumber = localStorage.getItem('newPhoneNumber');
 
-            fetch(`http://localhost:3000/verifyOTP`, {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify({ phoneNumber: phoneNumber, otpCode: otp })
-            })
-            .then(response => {
-                console.log(response.status);
-                if (response.status === 200) {
-                    // OTP verification successful, redirect to viewTicket.html
-                    alert("OTP verified. Redirecting to view ticket.");
-                    window.location.href = "viewTicket.html";
-                } else {
-                    // OTP verification failed, handle error
-                    alert("OTP verification failed. Please try again.");
-                }
-            })
-            .catch(error => console.error('Error:', error));
+                fetch(`http://localhost:3000/verifyOTP`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({ phoneNumber: newPhoneNumber, otpCode: otp })
+                })
+                .then(response => {
+                    console.log(response.status);
+                    if (response.status === 200) {
+                        // OTP verification successful, call transferTickets
+                        transferTickets(newPhoneNumber);
+                    } else {
+                        // OTP verification failed, handle error
+                        alert("OTP verification failed. Please try again.");
+                    }
+                })
+                .catch(error => console.error('Error:', error));
             }
+
+            function transferTickets(newPhoneNumber) {
+                var oldPhoneNumber = localStorage.getItem('oldPhoneNumber');
+                var ticketID = localStorage.getItem('ticketID');
+
+                fetch(`http://localhost:3000/transferTickets`, {
+                    method: 'PUT',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({ old_phoneNumber: oldPhoneNumber, new_phoneNumber: newPhoneNumber, ticketID: ticketID })
+                })
+                .then(response => {
+                    console.log(response.status);
+                    if (response.status === 200) {
+                        alert("Tickets transferred successfully.");
+                        // Redirect to a success page or perform other actions
+                        window.location.href = "success.html";
+                    } else {
+                        // Transfer failed, handle error
+                        alert("Failed to transfer tickets. Please try again.");
+                    }
+                })
+                .catch(error => console.error('Error:', error));
+            }
+
     </script>
 </body>
 </html>

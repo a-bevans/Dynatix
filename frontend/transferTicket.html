@@ -12,7 +12,6 @@
         <h1>Dynatix</h1>
     </header>
     <main>
-        <!-- need to figure out which phone number to access -->
         <section id="ticket-info" style=" display: flex; flex-direction: column; ">
             <!-- Ticket information will be displayed here -->
             <section id="event-info">
@@ -39,6 +38,8 @@
                                 <p>Location: ${ticket.location}</p>
                                 <p>Event Date: ${ticket.eventDate}</p>
                             `;
+                            // store ticket ID of ticket to be transferred in local storage 
+                            localStorage.setItem('transferedTicketID', ticket._ticketID);
                         });
                     } else {
                         document.getElementById('event-info').innerHTML = 'No tickets found.';
@@ -501,11 +502,6 @@
                 
 
                 <button onclick="return validateForm()">Transfer</button>
-
-
-                
-                
-            <!-- </form> -->
         </section>
 
         <!-- handling phone number input -->
@@ -539,6 +535,7 @@
                 }
 
                 // If all validations pass, save number & navigate to the other page
+                localStorage.setItem("oldPhoneNumber", localStorage.getItem("phoneNumber"))
                 localStorage.setItem("newPhoneNumber", confirmNumber);
                 window.location.href = "transferStatus.html";
                 return true;
