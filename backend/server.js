@@ -3,9 +3,17 @@ const bodyparser = require('body-parser');
 const express = require('express');
 const qr = require('qrcode');
 const cors = require('cors');
+const twilio = require('twilio');
 
 const app = express();
 const PORT = process.env.PORT || 3000;
+
+/* Twilio */ 
+const accountSid = "ACc8f51678884789fb81a57b059a24eda3";
+const authToken = process.env.TWILIO_AUTH_TOKEN;
+const verifySid = "VA21841efc480685730985d72642af6d92";
+
+const otpClient = twilio(accountSid, authToken);
 
 app.use(bodyparser.json());
 const corsOptions = {
@@ -144,4 +152,49 @@ app.get('/generateQRCode/:ticketID', async (request, response) => {
     } catch (e) {
         response.status(500).send(JSON.stringify(e));
     }
-});
+})
+
+/*POST send OTP*/
+app.post('/sendOTP', (request, response) => {
+    var data = request.body;
+    var phoneNumber = data["phoneNumber"];
+
+    db.collection("users").findOne({phoneNumber: phoneNumber}).then((result) => {
+        if (!result) {
+            response.status(404).send("User with the following phone number does not exist.");
+        } else {
+            otpClient.verify.v2.services(verifySid)
+            .verifications.create({ to: "+" + phoneNumber, channel: "sms" })
+            .then((verification) => {
+                console.log(verification.status);
+                response.status(200).send("An OTP has been sent to the user.");
+            }).catch(error => {
+                console.error('Error sending OTP:', error);
+                response.status(500).send("Error sending OTP to user.");
+            }) ; 
+        }
+    })
+})
+
+/*POST verify OTP*/
+app.post('/verifyOTP', (request, response) => {
+    var data = request.body;
+    var phoneNumber = data["phoneNumber"];
+    var otpCode = data["otpCode"];
+
+    db.collection("users").findOne({phoneNumber: phoneNumber}).then((result) => {
+        if (!result) {
+            response.status(404).send("User with the following phone number does not exist.");
+        } else {
+            otpClient.verify.v2.services(verifySid)
+            .verificationChecks.create({ to: "+" + phoneNumber, code: otpCode })
+            .then((verification_check) => {
+                console.log(verification_check.status);
+                response.status(200).send("User has been verified.");
+            }).catch(error => {
+                console.error('Error verifying OTP:', error);
+                response.status(500).send("Error verifying OTP to user.");
+            }) ; 
+        }
+    })
+})
