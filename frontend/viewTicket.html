@@ -32,6 +32,10 @@
                     if (Array.isArray(data.codes) && data.codes.length > 0) {
                         // Iterate over each ticket in the array
                         data.codes.forEach(ticket => {
+                            var ticketID = ticket._ticketID;
+                            localStorage.setItem('ticketID', ticketID);
+                            var dataToEncode = ticket._ticketID + ticket.event + ticket.location + ticket.eventDate;
+                            localStorage.setItem('dataToEncode', dataToEncode);
                             // Display ticket information
                             document.getElementById('event-info').innerHTML += `
                                 <p>Ticket ID: ${ticket._ticketID}</p>
@@ -56,10 +60,27 @@
               <!-- insert moving barcode here -->
               <div class='scanner'></div>
               <div id="anim-box">
-                  
+                  <script>
+                    var phoneNumber = localStorage.getItem('phoneNumber');
+                    var ticketID = localStorage.getItem('ticketID');
+                    var dataToEncode = localStorage.getItem('dataToEncode');
+
+                    fetch(`http://localhost:3000/generateQRCode/${ticketID}?phoneNumber=${phoneNumber}&dataToEncode=${dataToEncode}`)
+                        .then(response => {
+                            if (!response.ok) {
+                                throw new Error('Network response was not ok');
+                            }
+                            return response.json();
+                        })
+                        .then(qrImageURL => {
+                            // save the QR code image
+                            document.getElementById('barcode').src = qrImageURL;
+                        })
+                        .catch(error => console.error('Error:', error));
+                
+                  </script>
                   <!-- temporary only -->
-                  <img id="barcode" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAHQAAAB0CAYAAABUmhYnAAAAAklEQVR4AewaftIAAAKxSURBVO3BQW7sWAwEwSxC979yjpdcPUCQusfmZ0T8wRqjWKMUa5RijVKsUYo1SrFGKdYoxRqlWKMUa5RijVKsUYo1SrFGKdYoFw8l4ZtU7khCp9IloVPpkvBNKk8Ua5RijVKsUS5epvKmJNyRhE7lROUOlTcl4U3FGqVYoxRrlIsPS8IdKnck4SQJnUqXhE7ljiTcofJJxRqlWKMUa5SLYVS6JJyoTFKsUYo1SrFGufjHJOFE5S8r1ijFGqVYo1x8mMo3JaFTOUnCEyq/SbFGKdYoxRrl4mVJ+D+pdEnoVJ5Iwm9WrFGKNUqxRrl4SOUvScIdKn9JsUYp1ijFGuXioSR0Kl0S3qTSqdyh0iXhJAlvUvmkYo1SrFGKNcrFQyonKidJOFHpkvBNKl0SOpWTJJwkoVN5olijFGuUYo0Sf/CiJHQqJ0noVLokdCp3JOFEpUtCp3KShE7lJAmdypuKNUqxRinWKPEHL0rCHSp3JOFE5ZOS8CaVNxVrlGKNUqxRLl6mcpKEkyScqDyRhE6lS0Kn0ql0SehUTpLwScUapVijFGuU+IM/LAmdykkS3qRykoQ7VJ4o1ijFGqVYo1w8lIRvUulUTpLQqXRJ6FS6JNyRhE6lS0Kn8qZijVKsUYo1ysXLVN6UhJMkdConSThJwonKiUqXhE6lS0Kn8kSxRinWKMUa5eLDknCHyhNJ6FROktCpnCShUzlR6ZLQqbypWKMUa5RijXIxjMo3JeFEpVP5pGKNUqxRijXKxTBJuEOlS0Kn0qn8ZsUapVijFGuUiw9T+SSVN6nckYQ7VD6pWKMUa5RijXLxsiR8UxKeUOmS0Kl0SehU7khCp/KmYo1SrFGKNUr8wRqjWKMUa5RijVKsUYo1SrFGKdYoxRqlWKMUa5RijVKsUYo1SrFGKdYo/wF9oBDlsJjGOwAAAABJRU5ErkJggg==">
-              
+                  <img id="barcode" src="placeholder.png" alt="Barcode">
               </div>
               <p>SCREENSHOTS ARE NOT VALID</p>
             </div>
