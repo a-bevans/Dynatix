@@ -251,10 +251,16 @@
                         .then(response => {
                             console.log(response.status);
                             if (response.status == 200) {
-                                // User exists, do something with the data
+                                // User exists, call the function to send OTP
+                                fetch(`http://localhost:3000/sendOTP`, {
+                                    method: 'POST',
+                                    headers: {
+                                        'Content-Type': 'application/json'
+                                    },
+                                    body: JSON.stringify({ phoneNumber: fullNumber })
+                                })
                                 alert("OTP sent to your phone number.");
                                 localStorage.setItem('phoneNumber', fullNumber);
-                                // call the function to send OTP
                             } else {
                                 // User does not exist, handle error
                                 alert("This phone number has no tickets.");
@@ -265,14 +271,30 @@
                 }
 
                 function verifyOTP() {
-                    // var otp = document.getElementById('otp').value;
-                    // Add your OTP verification logic here
+                    var otp = document.getElementById('otp').value;
+                    var phoneNumber = localStorage.getItem('phoneNumber');
 
-                    // After OTP is verified, redirect to viewTicket.html
-                    window.location.href = "viewTicket.html";
+                    fetch(`http://localhost:3000/verifyOTP`, {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json'
+                        },
+                        body: JSON.stringify({ phoneNumber: phoneNumber, otpCode: otp })
+                    })
+                    .then(response => {
+                        console.log(response.status);
+                        if (response.status === 200) {
+                            // OTP verification successful, redirect to viewTicket.html
+                            alert("OTP verified. Redirecting to view ticket.");
+                            window.location.href = "viewTicket.html";
+                        } else {
+                            // OTP verification failed, handle error
+                            alert("OTP verification failed. Please try again.");
+                        }
+                    })
+                    .catch(error => console.error('Error:', error));
                  }
 
-                // document.getElementById('request-otp').addEventListener('click', checkNumber);
             </script>
             <button id="request-otp" onclick="checkNumber()">Request OTP</button>
             <p></p>
