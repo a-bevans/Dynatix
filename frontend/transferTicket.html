@@ -40,7 +40,7 @@
         <section id="transferring-actions">
                 <label for="phoneNumber">Input the phone number of the ticket recipient:</label>
                 <!-- country codes (ISO 3166) and Dial codes. -->
-                <select name="countryCode" id="">
+                <select name="transferCountryCode" id="transferCountryCode">
                     <option data-countryCode="GB" value="44" Selected>UK (+44)</option>
                     <option data-countryCode="US" value="1">USA (+1)</option>
                     <optgroup label="Other countries">
@@ -260,11 +260,11 @@
                         <option data-countryCode="ZW" value="263">Zimbabwe (+263)</option>
                     </optgroup>
                 </select>
-                <input type="text" id="phoneNumber" placeholder="Phone number">
+                <input type="text" id="transferPhoneNumber" placeholder="Phone number">
                 <p></p>
                 <label for="confirmPhoneNumber">Confirm Phone Number:</label>
                 
-                <select name="confirmCountryCode" id="">
+                <select name="confirmCountryCode" id="confirmCountryCode">
                     <option data-countryCode="GB" value="44" Selected>UK (+44)</option>
                     <option data-countryCode="US" value="1">USA (+1)</option>
                     <optgroup label="Other countries">
@@ -499,28 +499,34 @@
         <script>
             // Checking if the phone number is valid
             function validateForm() {
-                var phoneNumber = document.getElementById("phoneNumber").value;
+                var transferCountryCode = document.getElementById("transferCountryCode").value;
+                var transferPhoneNumber = document.getElementById("transferPhoneNumber").value;
+                var confirmCountryCode = document.getElementById("confirmCountryCode").value;
                 var confirmPhoneNumber = document.getElementById("confirmPhoneNumber").value;
 
+                var newNumber = transferCountryCode + transferPhoneNumber;
+                var confirmNumber = confirmCountryCode + confirmPhoneNumber;
+
                 // Validate length
-                if (phoneNumber.length !== 10 || confirmPhoneNumber.length !== 10) {
-                    alert("Phone numbers must be 10 digits long.");
+                if (newNumber.length !== 11 || confirmNumber.length !== 11) {
+                    alert("Phone numbers must be 11 digits long.");
                     return false;
                 }
 
                 // Validate numeric characters
-                if (!/^\d+$/.test(phoneNumber) || !/^\d+$/.test(confirmPhoneNumber)) {
+                if (!/^\d+$/.test(newNumber) || !/^\d+$/.test(confirmNumber)) {
                     alert("Phone numbers must contain only numeric characters.");
                     return false;
                 }
 
                 // Validate matching values
-                if (phoneNumber !== confirmPhoneNumber) {
+                if (newNumber !== confirmNumber) {
                     alert("Phone numbers do not match.");
                     return false;
                 }
 
-                // If all validations pass, navigate to the other page
+                // If all validations pass, save number & navigate to the other page
+                localStorage.setItem("newPhoneNumber", confirmNumber);
                 window.location.href = "transferStatus.html";
                 return true;
             }
