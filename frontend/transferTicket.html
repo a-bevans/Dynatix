@@ -12,28 +12,41 @@
         <h1>Dynatix</h1>
     </header>
     <main>
-        <section id="ticket-info">
+        <!-- need to figure out which phone number to access -->
+        <section id="ticket-info" style=" display: flex; flex-direction: column; ">
             <!-- Ticket information will be displayed here -->
             <section id="event-info">
-                <!-- <script>
-                    // Fetch the data from a server or local file
-                    fetch('path/to/your/data.json') 
-                        .then(response => response.json())
-                        .then(data => {
-                            // Insert the data into the HTML
-                            document.getElementById('event-info').innerHTML = `
-                                <p>Ticket/Order Number: ${data.ticketNumber}</p>
-                                <p>Event Name: ${data.eventName}</p>
-                                // Date | Time | Venue: 
-                                <p>${data.date} | ${data.time} | ${data.venue}</p>
-                                <p>Ticket Type: ${data.ticketType}</p>
-                                <p>Section: ${data.section}</p>
-                                <p>Row: ${data.row}</p>
-                                <p>Seat: ${data.seat}</p>
+                <script>
+                var phoneNumber = localStorage.getItem('phoneNumber');
+                console.log("TEST" + phoneNumber);
+                fetch(`http://localhost:3000/myTickets?phoneNumber=${phoneNumber}`)
+                // get ticket info to display on site
+                .then(response => {
+                if (!response.ok) {
+                    throw new Error('Network response was not ok');
+                }
+                return response.json();
+                })
+                .then(data => {
+                    // Check if data.codes is an array and not empty
+                    if (Array.isArray(data.codes) && data.codes.length > 0) {
+                        // Iterate over each ticket in the array
+                        data.codes.forEach(ticket => {
+                            // Display ticket information
+                            document.getElementById('event-info').innerHTML += `
+                                <p>Ticket ID: ${ticket._ticketID}</p>
+                                <p>Event: ${ticket.event}</p>
+                                <p>Location: ${ticket.location}</p>
+                                <p>Event Date: ${ticket.eventDate}</p>
                             `;
-                        })
-                        .catch(error => console.error('Error:', error));
-                </script> -->
+                        });
+                    } else {
+                        document.getElementById('event-info').innerHTML = 'No tickets found.';
+                    }
+                })
+                .catch(error => console.error('Error:', error));
+                
+                </script>
             </section>
         </section>
         
