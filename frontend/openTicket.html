@@ -253,6 +253,7 @@
                             if (response.status == 200) {
                                 // User exists, do something with the data
                                 alert("OTP sent to your phone number.");
+                                localStorage.setItem('phoneNumber', fullNumber);
                                 // call the function to send OTP
                             } else {
                                 // User does not exist, handle error
@@ -263,12 +264,20 @@
                         .catch(error => console.error('Error:', error));
                 }
 
-                document.getElementById('request-otp').addEventListener('click', checkNumber);
+                function verifyOTP() {
+                    // var otp = document.getElementById('otp').value;
+                    // Add your OTP verification logic here
+
+                    // After OTP is verified, redirect to viewTicket.html
+                    window.location.href = "viewTicket.html";
+                 }
+
+                // document.getElementById('request-otp').addEventListener('click', checkNumber);
             </script>
             <button id="request-otp" onclick="checkNumber()">Request OTP</button>
             <p></p>
             <input type="text" id="otp" placeholder="Enter OTP">
-            <button id="accept-ticket">Verify</button>
+            <button id="accept-ticket" onclick="verifyOTP()">Verify</button>
         </section>
     </main>
     <footer>

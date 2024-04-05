@@ -16,7 +16,37 @@
         <section id="ticket-info">
             <!-- Ticket information will be displayed here -->
             <section id="event-info">
-              
+                <script>
+                var phoneNumber = localStorage.getItem('phoneNumber');
+                console.log("TEST" + phoneNumber);
+                fetch(`http://localhost:3000/myTickets?phoneNumber=${phoneNumber}`)
+                // get ticket info to display on site
+                .then(response => {
+                if (!response.ok) {
+                    throw new Error('Network response was not ok');
+                }
+                return response.json();
+                })
+                .then(data => {
+                    // Check if data.codes is an array and not empty
+                    if (Array.isArray(data.codes) && data.codes.length > 0) {
+                        // Iterate over each ticket in the array
+                        data.codes.forEach(ticket => {
+                            // Display ticket information
+                            document.getElementById('event-info').innerHTML += `
+                                <p>Ticket ID: ${ticket._ticketID}</p>
+                                <p>Event: ${ticket.event}</p>
+                                <p>Location: ${ticket.location}</p>
+                                <p>Event Date: ${ticket.eventDate}</p>
+                            `;
+                        });
+                    } else {
+                        document.getElementById('event-info').innerHTML = 'No tickets found.';
+                    }
+                })
+                .catch(error => console.error('Error:', error));
+                
+                </script>
             </section>
             
             <div class='spacer'></div>
