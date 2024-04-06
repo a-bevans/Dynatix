@@ -17,7 +17,7 @@ const otpClient = twilio(accountSid, authToken);
 
 app.use(bodyparser.json());
 const corsOptions = {
-    origin: "http://127.0.0.1:5500",
+    origin: process.env.FRONTEND_URL,
     credentials: true,
 };
 app.use(cors(corsOptions));
@@ -194,6 +194,37 @@ app.post('/verifyOTP', (request, response) => {
             }).catch(error => {
                 console.error('Error verifying OTP:', error);
                 response.status(500).send("Error verifying OTP to user.");
+            }) ; 
+        }
+    })
+})
+
+/*POST send OTP to recipient phone number*/
+app.post('/transferOTP', (request, response) => {
+    var data = request.body;
+    var senderNumber = data["old_phoneNumber"];
+    var recipientNumber = data["new_phoneNumber"];
+    var twilioVirtualNumber = process.env.TWILIO_VIRTUAL_NUMBER;
+
+    db.collection("users").findOne({phoneNumber: senderNumber}).then((result) => {
+        if (!result) {
+            response.status(404).send("User with the following phone number does not exist.");
+        } else {
+            otpClient.verify.v2.services(verifySid)
+            .verifications.create({ to: "+" + recipientNumber, channel: "sms" })
+            .then((verification) => {
+                console.log(verification.status);
+                const recipientLink = process.env.FRONTEND_URL + "/frontend/acceptTicket.html";
+                const userMessage = `\n\n Dynatix Ticker Transfer Confirmation: \n\n A verification code has been sent to your number. \n\n Please enter it here: ${recipientLink}.`;
+                otpClient.messages.create({
+                    body: userMessage,
+                    from: twilioVirtualNumber,
+                    to: "+" + recipientNumber
+                })
+                response.status(200).send("An OTP has been sent to the recipient.");
+            }).catch(error => {
+                console.error('Error sending OTP:', error);
+                response.status(500).send("Error sending OTP to user.");
             }) ; 
         }
     })
