@@ -142,11 +142,22 @@ app.get('/generateQRCode/:ticketID', async (request, response) => {
     try {
         const qrImageURL = await qr.toDataURL(dataToEncode+Math.floor(Math.random() * 10000).toString());
 
-        db.collection("users").updateOne({ phoneNumber: phoneNumber, "codes._ticketID" : ticketID }, {$set : {"codes.$.qrCode": qrImageURL}}).then((result) => {
+        db.collection("users").findOne({ phoneNumber: phoneNumber, "codes._ticketID" : ticketID  }).then((result) => {
             if (!result) {
-                response.status(400).send("Unable to generate QR Code.");
-            } else {
-                response.status(200).send(JSON.stringify(qrImageURL));
+            response.status(404).send("User is not associated with the ticket that they are trying to view.");
+        } else {
+            db.collection("users").updateOne({ phoneNumber: phoneNumber, "codes._ticketID" : ticketID }, {$set : {"codes.$.qrCode": qrImageURL}}).then((result) => {
+                if (!result) {
+                    response.status(400).send("Unable to generate QR Code.");
+                } else {
+                    db.collection("tickets").updateOne({id :ticketID}, {$set: {qrCode: qrImageURL}}, {upsert:true}).then((result) => {
+                        if (!result) {
+                            response.status(400).send("Failed to update ticket QR code");
+                        } else {
+                            response.status(200).send(JSON.stringify(qrImageURL));
+                        }
+                    })
+                }})
             }
         })
     } catch (e) {
