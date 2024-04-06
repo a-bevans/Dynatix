@@ -14,35 +14,38 @@
     </header>
     <main>
         <p>You are about to receive a ticket for:</p>
-        <p>PLACEHOLDER FOR TICKET INFO</p>
         <section id="ticket-info">
             <!-- Ticket information will be displayed here -->
             <section id="event-info">
-                <!-- <script>
+                <script>
+                    console.log("New owner num: " + localStorage.getItem('newPhoneNumber'))
+                    var phoneNumber = localStorage.getItem('oldPhoneNumber');
+                    var ticketID = localStorage.getItem('transferedTicketID');
                     // Fetch the data from a server or local file
-                    fetch('path/to/your/data.json') 
-                        .then(response => response.json())
-                        .then(data => {
-                            // Insert the data into the HTML
-                            document.getElementById('event-info').innerHTML = `
-                                <p>Ticket/Order Number: ${data.ticketNumber}</p>
-                                <p>Event Name: ${data.eventName}</p>
-                                // Date | Time | Venue: 
-                                <p>${data.date} | ${data.time} | ${data.venue}</p>
-                                <p>Ticket Type: ${data.ticketType}</p>
-                                <p>Section: ${data.section}</p>
-                                <p>Row: ${data.row}</p>
-                                <p>Seat: ${data.seat}</p>
-                            `;
-                        })
-                        .catch(error => console.error('Error:', error));
-                </script> -->
+                    fetch(`http://localhost:3000/myTickets/${ticketID}?phoneNumber=${phoneNumber}`)
+                    .then(response => {
+                        if (!response.ok) {
+                            throw new Error('Network response was not ok');
+                        }
+                        return response.json();
+                    })
+                    .then(data => {
+                        // Display ticket information
+                        document.getElementById('event-info').innerHTML = `
+                            <p>Ticket ID: ${data._ticketID}</p>
+                            <p>Event: ${data.event}</p>
+                            <p>Location: ${data.location}</p>
+                            <p>Event Date: ${data.eventDate}</p>
+                        `;
+                    })
+                    .catch(error => console.error('Error:', error));
+                </script>
             </section>
             <p>To finalise the transfer, enter the 6 digit OTP that will be sent to your phone number.</p>
         </section>
         
         <section id="accept-actions">
-            <button id="request-otp" onclick="sendOTPNewOwner()">Request OTP</button>
+            <!-- <button id="request-otp" onclick="sendOTPNewOwner()">Request OTP</button> -->
             <p></p>
             <input type="text" id="otp" placeholder="Enter OTP">
             <button id="accept-ticket" onclick="verifyNewOwner()">Accept Ticket</button>
@@ -55,47 +58,47 @@
     
     <!-- handling otp verification for new number -->
     <script>
-        function sendOTPNewOwner() {
+        // function sendOTPNewOwner() {
+        //     var newPhoneNumber = localStorage.getItem('newPhoneNumber');
+        //     console.log(newPhoneNumber);
+        //     // call the function to send OTP
+        //     fetch(`http://localhost:3000/transferOTP`, {
+        //         method: 'POST',
+        //         headers: {
+        //             'Content-Type': 'application/json'
+        //         },
+        //         body: JSON.stringify({ phoneNumber: newPhoneNumber })
+        //     })
+        //     alert("OTP sent to your phone number.");
+        //     }
+
+        function verifyNewOwner() {
+            var otp = document.getElementById('otp').value;
             var newPhoneNumber = localStorage.getItem('newPhoneNumber');
-            console.log(newPhoneNumber);
-            // call the function to send OTP
-            fetch(`http://localhost:3000/sendOTP`, {
+
+            fetch(`http://localhost:3000/verifyNewOTP`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'
                 },
-                body: JSON.stringify({ phoneNumber: newPhoneNumber })
+                body: JSON.stringify({ phoneNumber: newPhoneNumber, otpCode: otp })
             })
-            alert("OTP sent to your phone number.");
-            return response.json();
-            }
-
-            function verifyNewOwner() {
-                var otp = document.getElementById('otp').value;
-                var newPhoneNumber = localStorage.getItem('newPhoneNumber');
-
-                fetch(`http://localhost:3000/verifyOTP`, {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json'
-                    },
-                    body: JSON.stringify({ phoneNumber: newPhoneNumber, otpCode: otp })
-                })
-                .then(response => {
-                    console.log(response.status);
-                    if (response.status === 200) {
-                        // OTP verification successful, call transferTickets
-                        transferTickets(newPhoneNumber);
-                    } else {
-                        // OTP verification failed, handle error
-                        alert("OTP verification failed. Please try again.");
-                    }
-                })
-                .catch(error => console.error('Error:', error));
-            }
+            .then(response => {
+                console.log(response.status);
+                if (response.status === 200) {
+                    // OTP verification successful, call transferTickets
+                    transferTickets(newPhoneNumber);
+                } else {
+                    // OTP verification failed, handle error
+                    alert("OTP verification failed. Please try again.");
+                }
+            })
+            .catch(error => console.error('Error:', error));
+        }
 
             function transferTickets(newPhoneNumber) {
                 var oldPhoneNumber = localStorage.getItem('oldPhoneNumber');
+                console.log(newPhoneNumber)
                 var ticketID = localStorage.getItem('ticketID');
 
                 fetch(`http://localhost:3000/transferTickets`, {

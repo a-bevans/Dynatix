@@ -537,7 +537,34 @@
                 // If all validations pass, save number & navigate to the other page
                 localStorage.setItem("oldPhoneNumber", localStorage.getItem("phoneNumber"))
                 localStorage.setItem("newPhoneNumber", confirmNumber);
-                window.location.href = "transferStatus.html";
+                // If all validations pass, send OTP to new phone number
+                fetch('http://localhost:3000/transferOTP', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({
+                        old_phoneNumber: localStorage.getItem('phoneNumber'),
+                        new_phoneNumber: confirmNumber,
+                    }),
+                })
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error('Network response was not ok');
+                    }
+                    return response.text();
+                })
+                .then(data => {
+                    alert(data); // Display response message
+                    localStorage.setItem("oldPhoneNumber", localStorage.getItem("phoneNumber"));
+                    localStorage.setItem("newPhoneNumber", confirmNumber);
+                    window.location.href = "transferStatus.html";
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                    alert("Error sending OTP to user.");
+                });
+
                 return true;
             }
             </script>
