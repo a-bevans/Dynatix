@@ -266,7 +266,7 @@ app.post('/transferOTP', (request, response) => {
 })
 
 /*POST verify new owner OTP*/
-app.get('/verifyNewOTP', (request, response) => {
+app.post('/verifyNewOTP', (request, response) => {
     var data = request.body;
     var phoneNumber = data["phoneNumber"];
     var otpCode = data["otpCode"];
