@@ -4,6 +4,7 @@ const express = require('express');
 const qr = require('qrcode');
 const cors = require('cors');
 const twilio = require('twilio');
+const path = require('path');
 
 const app = express();
 const PORT = process.env.PORT || 3000;
@@ -21,6 +22,7 @@ const corsOptions = {
     credentials: true,
 };
 app.use(cors(corsOptions));
+app.use(express.static(path.join(__dirname, '../frontend')));
 
 app.get('/', (req, res) => {
     res.send('Hello world!');
