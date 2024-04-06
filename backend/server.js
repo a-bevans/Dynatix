@@ -9,9 +9,9 @@ const app = express();
 const PORT = process.env.PORT || 3000;
 
 /* Twilio */ 
-const accountSid = "ACc8f51678884789fb81a57b059a24eda3";
+const accountSid = process.env.TWILIO_ACC_SID;
 const authToken = process.env.TWILIO_AUTH_TOKEN;
-const verifySid = "VA21841efc480685730985d72642af6d92";
+const verifySid = process.env.TWILIO_VERIFY_SID;
 
 const otpClient = twilio(accountSid, authToken);
 
