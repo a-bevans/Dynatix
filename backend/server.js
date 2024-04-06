@@ -140,7 +140,7 @@ app.get('/generateQRCode/:ticketID', async (request, response) => {
     var dataToEncode = request.query.dataToEncode;
 
     try {
-        const qrImageURL = await qr.toDataURL(dataToEncode);
+        const qrImageURL = await qr.toDataURL(dataToEncode+Math.floor(Math.random() * 10000).toString());
 
         db.collection("users").updateOne({ phoneNumber: phoneNumber, "codes._ticketID" : ticketID }, {$set : {"codes.$.qrCode": qrImageURL}}).then((result) => {
             if (!result) {
