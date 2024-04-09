@@ -9,8 +9,9 @@
 </head>
 <body>
     <header>
-        <!-- <img src="images/Dynatix Logo.png" alt="Dynatix Logo"> -->
-        <h1>Dynatix</h1>
+        <a href="/frontend/openTicket.html">
+            <img class="logo" src="/images/Dynatix Logo.png" alt="Dynatix Logo">
+        </a>        
     </header>
     <main>
         <p>You are about to receive a ticket for:</p>
@@ -45,7 +46,6 @@
         </section>
         
         <section id="accept-actions">
-            <!-- <button id="request-otp" onclick="sendOTPNewOwner()">Request OTP</button> -->
             <p></p>
             <input type="text" id="otp" placeholder="Enter OTP">
             <button id="accept-ticket" onclick="verifyNewOwner()">Accept Ticket</button>
@@ -58,19 +58,6 @@
     
     <!-- handling otp verification for new number -->
     <script>
-        // function sendOTPNewOwner() {
-        //     var newPhoneNumber = localStorage.getItem('newPhoneNumber');
-        //     console.log(newPhoneNumber);
-        //     // call the function to send OTP
-        //     fetch(`http://localhost:3000/transferOTP`, {
-        //         method: 'POST',
-        //         headers: {
-        //             'Content-Type': 'application/json'
-        //         },
-        //         body: JSON.stringify({ phoneNumber: newPhoneNumber })
-        //     })
-        //     alert("OTP sent to your phone number.");
-        //     }
 
         function verifyNewOwner() {
             var otp = document.getElementById('otp').value;

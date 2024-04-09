@@ -9,8 +9,9 @@
 </head>
 <body>
     <header>
-        <!-- <img src="images/Dynatix Logo.png" alt="Dynatix Logo"> -->
-        <h1>Dynatix</h1>
+        <a href="/frontend/openTicket.html">
+            <img class="logo" src="/images/Dynatix Logo.png" alt="Dynatix Logo">
+        </a>        
     </header>
     <main>
         <section id="ticket-info" style=" display: flex; flex-direction: column; ">
@@ -57,7 +58,7 @@
             <div class='anim-box'>
             <div></div>
             <div class='scanner'></div>
-              <!-- insert moving barcode here -->
+              <!-- moving barcode here -->
               <div class='scanner'></div>
               <div id="anim-box">
                   <script>
@@ -79,14 +80,13 @@
                         .catch(error => console.error('Error:', error));
                 
                   </script>
-                  <!-- temporary only -->
                   <img id="barcode" src="placeholder.png" alt="Barcode">
               </div>
               <p>SCREENSHOTS ARE NOT VALID</p>
             </div>
             <div class='spacer'></div>    
         <section id="ticket-actions">
-            <!-- Ticket actions (e.g., generate, transfer) will be displayed here -->
+            <!-- Ticket actions (transfer) will be displayed here -->
             <a href="transferTicket.html">
                 <button id="transfer-ticket">Transfer Ticket</button>
             </a>
